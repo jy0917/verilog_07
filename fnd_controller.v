@@ -6,6 +6,7 @@ module fnd_controller (
     output [3:0] fnd_com,
     output [7:0] fnd_data
 );
+
 //    assign fnd_com = 4'b1110;
     wire [3:0] w_digit_1, w_digit_10, w_digit_100, w_digit_1000;
     wire [3:0] bcd;
