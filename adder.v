@@ -1,5 +1,33 @@
 `timescale 1ns / 1ps
 
+// top module
+module adder_fnd (
+    input [7:0] a,
+    input [7:0] b,
+    input btn_L,
+    input btn_R,
+    output [3:0] fnd_com,
+    output [7:0] fnd_data,
+    output c
+);
+    wire [7:0] s;
+
+    fnd_controller U_FND_CNTL (
+        .fnd_in  (s),
+        .digit_sel({btn_L,btn_R}),
+        .fnd_com (fnd_com),
+        .fnd_data(fnd_data)
+    );
+
+    adder U_ADDER  ( //8bit adder
+        .a  (a),
+        .b  (b), 
+        .s  (s),
+        .c  (c)
+    );
+endmodule
+
+
 module adder (
     input [7:0] a,
     input [7:0] b,
@@ -8,20 +36,20 @@ module adder (
 );
     wire c1;
 
-    full_adder_4bit FA4_2(
-        .a(a[7:4]),
-        .b(b[7:4]),
+    full_adder_4bit FA4_2 (
+        .a  (a[7:4]),
+        .b  (b[7:4]),
         .cin(c1),
-        .s(s[7:4]),
-        .c(c)
+        .s  (s[7:4]),
+        .c  (c)
     );
 
-    full_adder_4bit FA4_1(
-        .a(a[3:0]),
-        .b(b[3:0]),
+    full_adder_4bit FA4_1 (
+        .a  (a[3:0]),
+        .b  (b[3:0]),
         .cin(1'b0),
-        .s(s[3:0]),
-        .c(c1)
+        .s  (s[3:0]),
+        .c  (c1)
     );
 endmodule
 
@@ -38,7 +66,7 @@ module full_adder_4bit (
     full_adder FA1 (
         .a  (a[0]),
         .b  (b[0]),
-        .cin(1'b0),  //1비트짜리 2진수 넣었다
+        .cin(cin),  //1비트짜리 2진수 넣었다
         .s  (s[0]),
         .c  (c1)
     );
@@ -103,7 +131,7 @@ module half_adder (
     output c
 );
 
-    xor U0(s, a, b);  //xor gate (output, input0, input1, input ...)
-    and(c, a, b);  // and gate (output, input0, input1 ...)
+    xor U0 (s, a, b);  //xor gate (output, input0, input1, input ...)
+    and (c, a, b);  // and gate (output, input0, input1 ...)
 
 endmodule
