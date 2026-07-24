@@ -23,29 +23,30 @@ module fsm_moore_led01 (
 
     //next state Combination Logic
     always @(*) begin
+        next_state = current_state;
         case (current_state)
             S0: begin
                 if (sw == 3'b001) next_state = S1;
                 else if (sw == 3'b100) next_state = S4;
                 else next_state = S0;
-                end
+            end
             S1: begin
                 if (sw == 3'b010) next_state = S2;
                 else next_state = S1;
-                end
+            end
             S2: begin
                 if (sw == 3'b011) next_state = S3;
                 else next_state = S2;
-                end
+            end
             S3: begin
                 if (sw == 3'b100) next_state = S4;
                 else next_state = S3;
-                end
+            end
             S4: begin
                 if (sw == 3'b111) next_state = S0;
                 else if (sw == 3'b001) next_state = S1;
                 else next_state = S4;
-                end
+            end
             default: next_state = current_state;
         endcase
     end
@@ -53,20 +54,13 @@ module fsm_moore_led01 (
     //output combinational logic
     // assign led = (current_state == S1) ? 1'b1 : 1'b0;
     always @(*) begin
-        if (current_state == S0) begin
-            led = 3'b000;  //S0
-        end
-        if (current_state == S1) begin
-            led = 3'b001;  //S1
-        end
-        if (current_state == S2) begin
-            led = 3'b010;
-        end
-        if (current_state == S3) begin
-            led = 3'b011;
-        end
-        if (current_state == S4) begin
-            led = 3'b100;
-        end
+        case (current_state)
+            S0: led = 3'b000;
+            S1: led = 3'b001;
+            S2: led = 3'b010;
+            S3: led = 3'b011;
+            S4: led = 3'b100;
+            default : led = 3'b000;
+        endcase
     end
 endmodule
